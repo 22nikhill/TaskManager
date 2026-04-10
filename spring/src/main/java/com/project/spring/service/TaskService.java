@@ -32,4 +32,27 @@ public class TaskService {
     public List<Task> getTaskByDeadline(LocalDate date){
         return taskrepo.findByDeadline(date);
     }
+
+    public List<Task> taskByPriority(Integer priority) {
+        return taskrepo.findByPriority(priority);
+    }
+    public Task updateTaskStatus(Long id , Boolean status){
+        Task task = taskrepo.findById(id).orElseThrow(()->new RuntimeException("Task Not found"));
+        task.setStatus(status);
+        return taskrepo.save(task);
+
+    }
+
+    public Task updateTaskPriority(Long id, Integer priority) {
+        Task task = taskrepo.findById(id).orElseThrow(()->new RuntimeException("Task Not found"));
+        task.setPriority(priority);
+        return taskrepo.save(task);
+    }
+    public Task updateTaskDeadline(Long id , LocalDate date) {
+        LocalDate currdate = LocalDate.now();
+        System.out.print(currdate);
+        Task task = taskrepo.findById(id).orElseThrow(()->new RuntimeException("Task Not found"));
+        task.setDeadline(date);
+        return taskrepo.save(task);
+    }
 }
