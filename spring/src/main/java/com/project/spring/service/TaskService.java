@@ -1,5 +1,6 @@
 package com.project.spring.service;
 
+import com.project.spring.DTO.TaskRequestDTO;
 import com.project.spring.Exception.TaskNotFoundException;
 import com.project.spring.entity.Task;
 import com.project.spring.taskrepo.TaskRepo;
@@ -18,8 +19,14 @@ public class TaskService {
 
         return taskrepo.findAll();
     }
-    public Task createtask(Task task){
-         return taskrepo.save(task);
+    public Task createtask(TaskRequestDTO taskdto){
+        Task newtask = new Task();
+        newtask.setName(taskdto.getTitle());
+        newtask.setDeadline(taskdto.getDate());
+        newtask.setPriority(taskdto.getPriority());
+        newtask.setDescription(taskdto.getDescription());
+
+         return taskrepo.save(newtask);
     }
     public List<Task> taskByStatus(Boolean status){
         return taskrepo.findByStatus(status);

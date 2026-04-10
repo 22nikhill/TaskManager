@@ -1,7 +1,9 @@
 package com.project.spring.controller;
 
+import com.project.spring.DTO.TaskRequestDTO;
 import com.project.spring.entity.Task;
 import com.project.spring.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -22,9 +24,9 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/newtask")
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequestDTO task) {
         Task newtask = taskService.createtask(task);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newtask);
+        return ResponseEntity.ok(newtask);
     }
 
     @GetMapping("/gettaskbypriority/{priority}")
