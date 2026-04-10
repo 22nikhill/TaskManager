@@ -55,4 +55,8 @@ public class TaskService {
         task.setDeadline(date);
         return taskrepo.save(task);
     }
+    public String deleteTask(Long id){
+            taskrepo.deleteById(id);
+        return "Task deleted Successfully";
+    }
 }
