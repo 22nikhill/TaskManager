@@ -4,9 +4,11 @@ import com.project.spring.entity.Task;
 import com.project.spring.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,12 @@ public class TaskController {
    private TaskService taskService;
 
 
+
+   @GetMapping("/gettaskbystatus/{status}")
+   public ResponseEntity<List<Task>> getTaskByStatus(@PathVariable Boolean status){
+       List<Task> tasks = taskService.taskByStatus(status);
+       return ResponseEntity.ok(tasks);
+   }
    @GetMapping("/gettask")
    public ResponseEntity<List<Task>>getAllTask(){
        List<Task> allTask = taskService.getAllTask();

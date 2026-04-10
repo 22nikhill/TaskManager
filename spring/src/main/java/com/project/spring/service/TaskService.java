@@ -21,7 +21,9 @@ public class TaskService {
     public Task createtask(Task task){
          return taskrepo.save(task);
     }
-
+    public List<Task> taskByStatus(Boolean status){
+        return taskrepo.findByStatus(status);
+    }
     public Task getTaskById(Long id) {
 
         return taskrepo.findById(id).orElseThrow(()->new TaskNotFoundException("TasK Not found" + id));
