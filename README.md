@@ -102,7 +102,7 @@ JSON
 ⚙️ Setup & Installation
 Clone Repository
 
-git clone https://github.com/your-username/task-manager.git
+git clone https://github.com/22nikhill/TaskManager
 Configure Database
 Update application.properties:
 
