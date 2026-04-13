@@ -1,12 +1,14 @@
 package com.project.spring.controller;
 
 import com.project.spring.DTO.TaskRequestDTO;
+import com.project.spring.DTO.TaskResponseDto;
 import com.project.spring.DTO.UpdateTaskStatusDto;
 import com.project.spring.Enums.Priority;
 import com.project.spring.Enums.Status;
 import com.project.spring.entity.Task;
 import com.project.spring.service.TaskService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 @RestController
@@ -43,12 +46,17 @@ public class TaskController {
 
 
    @GetMapping("/gettask")
-   public ResponseEntity<List<Task>> gettask(
+   public ResponseEntity<Page<TaskResponseDto>> gettask(
            @RequestParam(required = false) Status status,
-           @RequestParam(required = false) Priority priority
+           @RequestParam(required = false) Priority priority,
+           @RequestParam(defaultValue = "5") int page,
+           @RequestParam(defaultValue = "10") int size,
+           @RequestParam(defaultValue = "id") String sortby,
+           @RequestParam(defaultValue = "asc") String order
+
 
    ){
-        List<Task> tasks = taskService.gettask(status,priority);
+        Page<TaskResponseDto> tasks = taskService.gettask(status,priority,sortby,order, page , size);
         return ResponseEntity.ok(tasks);
    }
 

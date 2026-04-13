@@ -2,6 +2,10 @@ package com.project.spring.taskrepo;
 import com.project.spring.Enums.Priority;
 import com.project.spring.Enums.Status;
 import com.project.spring.entity.Task;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +16,10 @@ import java.util.List;
 public interface TaskRepo extends JpaRepository<Task,Long> {
 
     public List<Task> findByDeadline(LocalDate deadline);
-    public List<Task> findByStatus(Status status);
+    public Page<Task> findByStatus(Status status, Pageable pageable);
 
-    public List<Task> findByPriority(Priority priority);
-    public List<Task> findByStatusAndPriority(Status status,Priority priority);
+    public Page<Task> findByPriority(Priority priority, Pageable pageable);
+    public Page<Task> findByStatusAndPriority(Status status,Priority priority, Pageable pageable);
 
 
 }

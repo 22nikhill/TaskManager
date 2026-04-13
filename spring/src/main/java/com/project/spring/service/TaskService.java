@@ -1,6 +1,7 @@
 package com.project.spring.service;
 
 import com.project.spring.DTO.TaskRequestDTO;
+import com.project.spring.DTO.TaskResponseDto;
 import com.project.spring.DTO.UpdateTaskStatusDto;
 import com.project.spring.Enums.Priority;
 import com.project.spring.Enums.Status;
@@ -8,7 +9,12 @@ import com.project.spring.Exception.TaskNotFoundException;
 import com.project.spring.entity.Task;
 import com.project.spring.taskrepo.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -68,16 +74,37 @@ public class TaskService {
         return "Task deleted Successfully";
     }
 
-    public List<Task> gettask(Status status, Priority priority) {
+    public TaskResponseDto mapToDto(Task task){
+        TaskResponseDto dto = new TaskResponseDto();
+        dto.setId(task.getId());
+        dto.setTitle(task.getTitle());
+        dto.setStatus(task.getStatus());
+        dto.setPriority(task.getPriority());
+        dto.setDeadline(task.getDeadline());
+        return dto;
+    }
+    public Page<TaskResponseDto> gettask(Status status, Priority priority,
+                              String sortby, String order,
+                              int page, int size)
+    {
+        Sort sort = order.equalsIgnoreCase("desc")? Sort.by(sortby).descending():
+                 Sort.by(sortby).ascending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+
         if(status != null && priority != null){
-            return taskrepo.findByStatusAndPriority(status,priority);
+           Page<Task> taskPage = taskrepo.findByStatusAndPriority(status,priority,pageable);
+           return taskPage.map(this::mapToDto);
         }
-        if(priority != null ){
-            return taskrepo.findByPriority(priority);
+        else if(priority != null ){
+            Page<Task> taskPage = taskrepo.findByPriority(priority,pageable);
+            return taskPage.map(this::mapToDto);
         }
-        if(status != null){
-            return taskrepo.findByStatus(status);
+        else if(status != null){
+            Page<Task> taskPage = taskrepo.findByStatus(status,pageable);
+            return  taskPage.map(this::mapToDto);
         }
-        return taskrepo.findAll();
+        Page<Task> taskPage = taskrepo.findAll(pageable);
+        return taskPage.map(this::mapToDto);
+
     }
 }
