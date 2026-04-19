@@ -1,5 +1,6 @@
 package com.project.spring.service;
 
+import com.project.spring.Config.UserConfig;
 import com.project.spring.DTO.LoginRequestDto;
 import com.project.spring.DTO.SignupRequestDTO;
 import com.project.spring.Entity.User;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepo userrepo;
+    @Autowired
+    private UserConfig config;
 
     public User createUser(SignupRequestDTO requestDTO){
        if(userrepo.existsByEmail(requestDTO.getEmail())){
@@ -21,15 +24,19 @@ public class UserService {
        User newuser = new User();
        newuser.setName(requestDTO.getName());
        newuser.setEmail(requestDTO.getEmail());
-       newuser.setPassword(requestDTO.getPassword());
+       newuser.setPassword(config.passwordEncoder().encode(requestDTO.getPassword()));
 
        return userrepo.save(newuser);
     }
     public  User login(LoginRequestDto loginDto){
         User  user = userrepo.findByEmail(loginDto.getEmail())
                 .orElseThrow(()->new RuntimeException("User Not Found"));
-        if(!user.getPassword().equals(loginDto.getPassword())){
-            throw  new RuntimeException("password did not match");
+        if(!config.passwordEncoder().matches(loginDto.getPassword(),user.getPassword())){
+            System.out.println(user.getPassword());
+            System.out.println(loginDto.getPassword());
+            throw new RuntimeException(
+
+            );
         }
         return user;
 
