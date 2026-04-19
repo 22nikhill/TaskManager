@@ -1,5 +1,6 @@
 package com.project.spring.service;
 
+import com.project.spring.DTO.LoginRequestDto;
 import com.project.spring.DTO.SignupRequestDTO;
 import com.project.spring.Entity.User;
 import com.project.spring.taskrepo.TaskRepo;
@@ -23,5 +24,14 @@ public class UserService {
        newuser.setPassword(requestDTO.getPassword());
 
        return userrepo.save(newuser);
+    }
+    public  User login(LoginRequestDto loginDto){
+        User  user = userrepo.findByEmail(loginDto.getEmail())
+                .orElseThrow(()->new RuntimeException("User Not Found"));
+        if(!user.getPassword().equals(loginDto.getPassword())){
+            throw  new RuntimeException("password did not match");
+        }
+        return user;
+
     }
 }

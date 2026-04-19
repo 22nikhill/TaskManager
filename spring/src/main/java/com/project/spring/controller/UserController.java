@@ -1,5 +1,6 @@
 package com.project.spring.controller;
 
+import com.project.spring.DTO.LoginRequestDto;
 import com.project.spring.DTO.SignupRequestDTO;
 import com.project.spring.Entity.User;
 import com.project.spring.service.UserService;
@@ -18,6 +19,11 @@ public class UserController {
     public ResponseEntity<User> create(@Valid @RequestBody SignupRequestDTO singnupDto){
        User newuser = userService.createUser(singnupDto);
        return ResponseEntity.ok(newuser);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<User>login(@Valid @RequestBody LoginRequestDto loginDto){
+        User login_cred = userService.login(loginDto);
+        return ResponseEntity.ok(login_cred);
     }
 
 }
