@@ -1,11 +1,10 @@
 package com.project.spring.taskrepo;
 import com.project.spring.Enums.Priority;
 import com.project.spring.Enums.Status;
-import com.project.spring.entity.Task;
+import com.project.spring.Entity.Task;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

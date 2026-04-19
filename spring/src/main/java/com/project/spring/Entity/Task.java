@@ -1,11 +1,10 @@
-package com.project.spring.entity;
+package com.project.spring.Entity;
 
 import com.project.spring.Enums.Priority;
 import com.project.spring.Enums.Status;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 

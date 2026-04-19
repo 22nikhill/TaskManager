@@ -6,7 +6,7 @@ import com.project.spring.DTO.UpdateTaskStatusDto;
 import com.project.spring.Enums.Priority;
 import com.project.spring.Enums.Status;
 import com.project.spring.Exception.TaskNotFoundException;
-import com.project.spring.entity.Task;
+import com.project.spring.Entity.Task;
 import com.project.spring.taskrepo.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
