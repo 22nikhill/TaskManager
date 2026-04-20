@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -21,9 +23,9 @@ public class UserController {
        return ResponseEntity.ok(newuser);
     }
     @PostMapping("/login")
-    public ResponseEntity<User>login(@Valid @RequestBody LoginRequestDto loginDto){
-        User login_cred = userService.login(loginDto);
-        return ResponseEntity.ok(login_cred);
+    public ResponseEntity<?>login(@Valid @RequestBody LoginRequestDto loginDto){
+        String  token  = userService.login(loginDto);
+        return ResponseEntity.ok(Map.of("token",token));
     }
 
 }

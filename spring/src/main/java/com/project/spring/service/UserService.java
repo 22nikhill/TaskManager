@@ -1,14 +1,14 @@
 package com.project.spring.service;
 
-import com.project.spring.Config.UserConfig;
+import com.project.spring.Security.JwtUtil;
+import com.project.spring.Security.UserConfig;
 import com.project.spring.DTO.LoginRequestDto;
 import com.project.spring.DTO.SignupRequestDTO;
 import com.project.spring.Entity.User;
-import com.project.spring.taskrepo.TaskRepo;
 import com.project.spring.taskrepo.UserRepo;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {
@@ -16,6 +16,8 @@ public class UserService {
     private UserRepo userrepo;
     @Autowired
     private UserConfig config;
+    @Autowired
+    private JwtUtil jwtutil;
 
     public User createUser(SignupRequestDTO requestDTO){
        if(userrepo.existsByEmail(requestDTO.getEmail())){
@@ -28,17 +30,14 @@ public class UserService {
 
        return userrepo.save(newuser);
     }
-    public  User login(LoginRequestDto loginDto){
+    public  String login(LoginRequestDto loginDto){
         User  user = userrepo.findByEmail(loginDto.getEmail())
                 .orElseThrow(()->new RuntimeException("User Not Found"));
         if(!config.passwordEncoder().matches(loginDto.getPassword(),user.getPassword())){
-            System.out.println(user.getPassword());
-            System.out.println(loginDto.getPassword());
-            throw new RuntimeException(
 
-            );
+            throw new RuntimeException("Incorrect password");
         }
-        return user;
+        return jwtutil.generateToken(user.getEmail());
 
     }
 }
