@@ -1,14 +1,9 @@
-# Use Java image
-FROM openjdk:17-jdk-slim
+FROM maven:3.9.9-eclipse-temurin-17
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
 COPY . .
 
-# Build the project
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
-# Run the jar
 CMD ["java", "-jar", "target/spring-0.0.1-SNAPSHOT.jar"]
